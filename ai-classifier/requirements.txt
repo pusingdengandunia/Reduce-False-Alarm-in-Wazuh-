@@ -1,0 +1,20 @@
+# Runtime dependencies for the AI classifier service.
+# Versions below are what is deployed on the Wazuh Manager VM.
+#
+# WARNING: the serialized model artifacts (*.pkl) were produced with
+# scikit-learn 1.6.1, not 1.9.1. Loading across this gap raises
+# InconsistentVersionWarning and may alter results silently.
+# Retrain inside this environment, or pin scikit-learn==1.6.1 here and
+# reinstall, before trusting any prediction.
+# See docs/05-results-analysis.md section 5.5.
+
+Flask==3.1.3
+scikit-learn==1.9.1
+joblib==1.6.0
+numpy==2.5.3
+pandas==3.0.6
+
+# Required by the Wazuh integration script (custom-ai.py). Already present in
+# Wazuh's bundled interpreter at /var/ossec/framework/python/bin/python3
+# (requests 2.32.2); listed here only for standalone testing.
+requests>=2.32.2

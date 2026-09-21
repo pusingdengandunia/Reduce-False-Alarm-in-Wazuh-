@@ -1,0 +1,1 @@
+{"threshold": 0.491, "features": ["rule.level", "data.alert.severity", "hour", "day_of_week", "is_weekend", "rule.id", "data.alert.signature_id"]}

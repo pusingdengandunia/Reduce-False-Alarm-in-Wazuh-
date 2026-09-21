@@ -1,0 +1,28 @@
+[Unit]
+Description=Wazuh AI Classifier
+After=network.target
+
+[Service]
+ExecStart=/home/azureuser/myenv/bin/python3 /opt/ai-classifier/app.py
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+
+# --- Hardening notes (not applied in the deployed unit) ---------------------
+# The service only needs read access to /opt/ai-classifier and the ability to
+# bind 127.0.0.1:5000, so running as root is stronger than required.
+# A hardened variant:
+#
+#   User=aiclassifier
+#   Group=aiclassifier
+#   NoNewPrivileges=true
+#   PrivateTmp=true
+#   ProtectSystem=strict
+#   ProtectHome=true
+#   ReadOnlyPaths=/opt/ai-classifier
+#   RestrictAddressFamilies=AF_INET
+#
+# Note that ProtectHome=true is incompatible with an ExecStart under
+# /home/azureuser. Move the virtualenv to /opt/ai-classifier/venv first.

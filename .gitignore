@@ -1,0 +1,34 @@
+# --- Secrets ---
+.env
+*.env
+!.env.example
+secrets/
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+known_hosts
+
+# --- Serialized models (joblib.load executes arbitrary code; distribute out-of-band) ---
+*.pkl
+*.joblib
+
+# --- Raw alert dumps that may contain internal hostnames or IPs ---
+alerts.json
+alerts.log
+ossec.log
+integrations.log
+*.alert
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+myenv/
+.ipynb_checkpoints/
+
+# --- OS noise ---
+Thumbs.db
+desktop.ini
+.DS_Store

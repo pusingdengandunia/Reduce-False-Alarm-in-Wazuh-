@@ -1,0 +1,4 @@
+#!/bin/sh
+DIR_NAME="$(cd "$(dirname "$0")"; pwd -P)"
+WAZUH_PATH="$(cd "${DIR_NAME}/.."; pwd)"
+"${WAZUH_PATH}/framework/python/bin/python3" "${DIR_NAME}/custom-ai.py" "$@"
