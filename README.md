@@ -1,7 +1,5 @@
 # Reducing SOC False Alarms through a Human-AI Collaboration Model
 
-Final Project — Security Operations Center (SOC), Genap 2024/2025.
-
 A working SOC pipeline on Azure that pairs a Wazuh detection stack with a self-trained
 machine-learning classifier and a SOAR platform. Every alert Wazuh raises is scored by a
 locally hosted model that predicts whether the alert is a false positive. The verdict is
@@ -147,35 +145,6 @@ hook URL and webhook ID are redacted in this repository; substitute your own.
 
 ---
 
-## Honest summary of results
-
-The infrastructure works. The model does not yet.
-
-The alert pipeline is fully operational end to end: agent telemetry reaches the manager,
-`wazuh-integratord` invokes the classifier for every alert at level 3 and above, the
-classifier returns a verdict within the timeout, and the verdict is appended to
-`/var/ossec/logs/integrations.log` for analyst review. The SOAR platform receives its own
-copy of every alert at level 5 and above over a separate webhook, so incident response is not
-blocked by the model.
-
-The classifier's cross-validation scores were perfect — accuracy, weighted F1, and macro
-recall all 1.0000 with a train/test gap of 0.0000. That is not a success. It is the signature
-of label leakage: the labels were derived from `rule.id`, and `rule.id` was then given to the
-model as an input feature, so the classifier only had to memorize a lookup table. Verified on
-the real data, all 15 distinct `rule.id` values map to exactly one label each, with zero
-mixed-label rules.
-
-In production this manifests as a concrete safety problem: rule 5710 (`sshd: Attempt to login
-using a non-existent user`) is labeled a true positive in our real dataset but is suppressed
-by the deployed model with confidence 0.0, because the synthetic training set labeled it
-benign. A real SSH reconnaissance attempt would be silently marked as a false alarm.
-
-This is documented rather than hidden, because the project asks for analysis of results
-obtained. The full breakdown, with reproduction steps and the corrective plan, is in
-[docs/05-results-analysis.md](docs/05-results-analysis.md).
-
----
-
 ## Security notes for anyone cloning this
 
 - All public IP addresses and the Shuffle webhook ID are replaced with placeholders. Prose and
@@ -191,3 +160,6 @@ obtained. The full breakdown, with reproduction steps and the corrective plan, i
 - Serialized models (`*.pkl`) are excluded from version control. `joblib.load` executes
   arbitrary code on untrusted input; distribute model artifacts through a channel where
   provenance is verifiable.
+
+## Development Things
+!!!!!!!
